@@ -1,0 +1,3 @@
+public enum Marche {
+    IVECO, FIAT, DACIA, FORD, BMW, FERRARI, AUDI, JEEP, PEUGEUT, RENAULT, OPEL, SKODA,
+}
