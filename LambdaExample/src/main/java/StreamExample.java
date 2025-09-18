@@ -1,0 +1,116 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class StreamExample {
+    public static void main(String[] args) {
+
+        List<Persona> persone = Arrays.asList(
+                new Persona("Anna", 23, "Italia"),
+                new Persona("Mario", 34, "Italia"),
+                new Persona("Michela", 46, "Italia"),
+                new Persona("Giorgio", 32, "Italia"),
+                new Persona("Frank", 27, "Germania"),
+                new Persona("Pavel", 26, "Polonia"),
+                new Persona("Zoe", 41, "Germania"),
+                new Persona("Ingrid", 38, "Svezia"),
+                new Persona("Paul", 24, "Germania"),
+                new Persona("Francesca", 45, "Italia"),
+                new Persona("Paolo", 33, "Italia")
+        );
+
+        System.out.println("Lista di persone originale; " + persone);
+
+        // Esempio1: Cercare tutti i nomi delle persone con più di 30 anni che siano italiane, ordinali alfabeticamente
+
+        // Metodo classico
+        List<String> nomiPersone = new ArrayList<>();
+        for (Persona p : persone) {
+            if (p.getEta() > 30 && p.getNazione().equals("Italia"))
+                nomiPersone.add(p.getNome());
+        }
+
+        Collections.sort(nomiPersone);
+
+        System.out.println("Metodo classico");
+        System.out.println("Nomi persone: " + nomiPersone);
+
+        // metodo Stream API
+        List<String> nomiPersoneStream = persone.stream() // Ritorna uno stream di Persone
+                .filter(p -> p.getNazione().equals("Italia"))
+                .filter(p -> p.getEta() > 30)
+                .map(p -> p.getNome())
+                .sorted((a, b) -> a.compareTo(b))
+                .toList();
+
+        System.out.println("Metodo Stream API");
+        System.out.println("Nomi persone: " + nomiPersoneStream);
+
+        // Operazioni su tutti gli elementi dello stream
+        // Es: stampare a video i nomi tutte le peorsone della GErmania
+
+        persone.stream()
+                .filter(p -> p.getNazione().equals("Germania"))
+                .forEach(p -> System.out.print(p.getNome() + " "));
+
+        // Es: troviamo il nome della prima persona italiana
+        persone.stream()
+                .filter(p -> p.getNazione().equals("Italia"))
+                .findFirst()
+                .ifPresent(p -> System.out.println("prima persona italiana: " + p));
+
+        // Es: calcolare il totale delle età delle persone
+        int totaleEta = persone.stream()
+                .map(p -> p.getEta())
+                .reduce(0, (sommaParziale, eta) -> sommaParziale + eta);
+        System.out.println("Somma delle età: " + totaleEta);
+
+        // Es: calcola la media della eta
+        int media = (Collections.max(persone).getEta() + Collections.min(persone).getEta()) / 2;
+        System.out.println(media);
+
+        System.out.println(media * persone.size());
+    }
+}
+
+
+class Persona implements Comparable{ //POJO = Plain Old Java Object
+    private String nome;
+    private int eta;
+    private String nazione;
+
+    public Persona(String nome, int eta, String nazione) {
+        this.nome = nome;
+        this.eta = eta;
+        this.nazione = nazione;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getEta() {
+        return eta;
+    }
+
+    public String getNazione() {
+        return nazione;
+    }
+
+    @Override
+    public String toString() {
+        return "\nPersona{" +
+                "nome='" + nome + '\'' +
+                ", eta=" + eta +
+                ", nazione='" + nazione + '\'' +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Persona p = (Persona) o;
+        if (this.eta > p.getEta()) return 1;
+        else if (this.eta < p.getEta()) return -1; return 0;
+    }
+}
