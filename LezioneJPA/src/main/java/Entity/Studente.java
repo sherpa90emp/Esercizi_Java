@@ -9,45 +9,52 @@ import java.util.Set;
 @Table(name = "studenti")
 public class Studente {
 
-        @Id // rende la colonna una primary key
-        @GeneratedValue(strategy = GenerationType.IDENTITY) // id auto incrementante
-        private Long id;
+    @Id // rende la colonna una primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // id auto incrementante
+    private Long id;
 
-        @Column(length = 50, nullable = false) // aggiungere i vincoli lunghezza max 50 e not nullable
-        private String nome;
+    @Column(length = 50, nullable = false) // aggiungere i vincoli lunghezza max 50 e not nullable
+    private String nome;
 
-        @Column(length = 50) // aggiungere vincolo lunghezza di massimo 50 caratteri
-        private String cognome;
+    @Column(length = 50) // aggiungere vincolo lunghezza di massimo 50 caratteri
+    private String cognome;
 
-        @Column(unique = true) // aggiunge vincolo unicità di specifico valore nella tabella
-        private String matricole;
+    @Column(unique = true) // aggiunge vincolo unicità di specifico valore nella tabella
+    private String matricola;
 
-        @ManyToMany
-        @JoinTable( // many to many ha bisogno di una tablella di join intermedia
-                name = "iscrizioni", //specifica il nome della tabella di join
-                joinColumns = @JoinColumn(name = "studente_id"), // specifica il nome della colonna che specifica l'id dello studente
-                inverseJoinColumns = @JoinColumn(name = "corso_id")
-        )
-        private Set<Corso> corsiFrequentati = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER) // fetchtype cambia il tipo da lazy a eager (si scarica tutto dopo dal db, mentre con lazy li scarica quando vengono chiamati
+    @JoinTable( // many to many ha bisogno di una tablella di join intermedia
+            name = "iscrizioni", //specifica il nome della tabella di join
+            joinColumns = @JoinColumn(name = "studente_id"), // specifica il nome della colonna che specifica l'id dello studente
+            inverseJoinColumns = @JoinColumn(name = "corso_id")
+    )
+    private Set<Corso> corsiFrequentati = new HashSet<>();
 
-        @OneToMany(mappedBy = "studente") //nome della proprietà Studente nella classe Esame
-        private Set<Esame> esami = new HashSet<>();
+    @OneToMany(mappedBy = "studente", fetch = FetchType.EAGER) //nome della proprietà Studente nella classe Esame
+    private Set<Esame> esami = new HashSet<>();
 
-        public Studente() {}
+    public Studente() {
+    }
 
-    public Studente(Long id, String nome, String cognome, String matricole, Set<Corso> corsiFrequentati, Set<Esame> esami) {
+    public Studente(Long id, String nome, String cognome, String matricola, Set<Corso> corsiFrequentati, Set<Esame> esami) {
         this.id = id;
         this.nome = nome;
         this.cognome = cognome;
-        this.matricole = matricole;
+        this.matricola = matricola;
         this.corsiFrequentati = corsiFrequentati;
         this.esami = esami;
     }
 
-    public Studente(String nome, String cognome, String matricole) {
+    public Studente(String nome, String cognome, String matricola) {
         this.nome = nome;
         this.cognome = cognome;
-        this.matricole = matricole;
+        this.matricola = matricola;
+    }
+
+    //metodo helper che aggiunge un corso ad uno studente
+    public void addCorso(Corso corso) {
+        this.corsiFrequentati.add(corso); // collego il corso allo studente
+        corso.getStudentiIscritti().add(this); // collego lo studente al corso
     }
 
     public Long getId() {
@@ -74,12 +81,12 @@ public class Studente {
         this.cognome = cognome;
     }
 
-    public String getMatricole() {
-        return matricole;
+    public String getMatricola() {
+        return matricola;
     }
 
-    public void setMatricole(String matricole) {
-        this.matricole = matricole;
+    public void setMatricole(String matricola) {
+        this.matricola = matricola;
     }
 
     public Set<Corso> getCorsiFrequentati() {
@@ -104,7 +111,7 @@ public class Studente {
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
-                ", matricole='" + matricole + '\'' +
+                ", matricole='" + matricola + '\'' +
                 ", corsiFrequentati=" + corsiFrequentati +
                 ", esami=" + esami +
                 '}';

@@ -10,7 +10,7 @@ public class Esame {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
     @Column(nullable = false)
     private Integer voto;
@@ -26,7 +26,8 @@ public class Esame {
     @JoinColumn(name = "studente_id")
     private Studente studente;
 
-    public Esame() {}
+    public Esame() {
+    }
 
     public Esame(Integer voto, LocalDate data, Corso corso, Studente studente) {
         this.voto = voto;

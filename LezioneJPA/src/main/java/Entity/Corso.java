@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "corsi") // creando noi le tabelle (o come nel caso dei crediti alla creazione delle colonne), specifichiamo un nome più simile a quelli in uso sul db
+@Table(name = "corsi")
+// creando noi le tabelle (o come nel caso dei crediti alla creazione delle colonne), specifichiamo un nome più simile a quelli in uso sul db
 public class Corso {
 
     @Id
@@ -33,7 +34,8 @@ public class Corso {
     @OneToMany(mappedBy = "corso")
     private Set<Esame> esami = new HashSet<>();
 
-    public Corso() {}
+    public Corso() {
+    }
 
     public Corso(String codice, String nome, Integer creditiCfu) {
         this.codice = codice;
