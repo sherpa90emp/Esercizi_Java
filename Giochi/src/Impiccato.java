@@ -3,6 +3,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Impiccato {
+
+    //TODO implementare "parole.txt"
+
     public static void main(String[] args) {
         String[] parole = {"Bulbasaur", "Ivysaur", "Venusaur",
                 "Charmander", "Charmeleon", "Charizard",
