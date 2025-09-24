@@ -17,6 +17,8 @@ public class HelloServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.getSession(); // richiede esplicitamente la sessione
+
         //imposto il content type alla response perchè tornerò una pagina html
         response.setContentType("text/html; charset=utf-8");
 
