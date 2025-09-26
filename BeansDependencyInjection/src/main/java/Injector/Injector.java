@@ -8,7 +8,7 @@ public class Injector {
     public static void performInjection(Object target) {
         //controlla se l'oggetto target implementa la giusta interfaccia
         if (target instanceof Injectable) {
-            System.out.println("Injector: Trovato oggetto di tipo onjectable. Procedo con l'iniezione");
+            System.out.println("Injector: Trovato oggetto di tipo injectable. Procedo con l'iniezione");
             //creo la dipendenza
             MyDependency dependency = new MyDependency();
             //cast dell'oggetto al tipo dell'interfaccia
