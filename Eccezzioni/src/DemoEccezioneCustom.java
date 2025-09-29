@@ -12,7 +12,7 @@ public class DemoEccezioneCustom {
 
     public static void stampaNome(String nome) throws MiaEccezione{ // dichiarazione dell'eccezione che poi andrà gestita
         if (nome == null)
-            throw new MiaEccezione("Il nome non può essere null"); //va lancia e dichiarata poichè è checked
+            throw new MiaEccezione("Il nome non può essere null"); //va lanciata e dichiarata poichè è checked
         System.out.println("Ciao " + nome);
     }
 }
